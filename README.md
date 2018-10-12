@@ -1,5 +1,5 @@
-![CF](http://i.imgur.com/7v5ASc8.png) Lab 04: Bitmap Transformer
-===
+![CF](http://i.imgur.com/7v5ASc8.png) LAB: Buffers - Bitmap Transformer
+=======================================================================
 
 ## Submission Instructions
 * Follow the core submission instructions
@@ -17,7 +17,12 @@ For this assignment you will be building a bitmap (`.bmp`) transformer CLI. It w
 
 **Assignment 1: Do this will callbacks**
 
-**Assignment 2: (Stretch Goal) - Refactor to use promises**
+**Assignment 2: Modularize the code**
+  * What should be unique, testable modules?
+  * What structure should you use to most easily export?
+  * How best can we make this scale?
+
+**Stretch Goal - Refactor to use promises**
 
 #### Minimum Requirements
 * The CLI should be architected using best modularization practices
@@ -48,8 +53,8 @@ You will want to define a strategy for solving the problem before you begin to c
 
 ## Starter Code
 You've been provided with starter code that implements the basic wiring of the above strategy.
-* The index.js file reads the file and calls into the bitmap module to `parse()` and `transform()`
-* The parsing has been left to you
+* The index.js file reads the file and creates a bitmap instance that can `parse()` and `transform()`
+* The parsing ahas been left to you
 * A sample (yet non-functional) transformation has been provided.
 * No tests have been written, you'll need to implement those
 
