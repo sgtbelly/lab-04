@@ -2,6 +2,10 @@
 
 const fs = require('fs');
 
+const buffer = fs.readFileSync(`${__dirname}/baldy.bmp`);
+
+console.log(buffer);
+
 /**
  * Bitmap -- receives a file name, used in the transformer to note the new buffer
  * @param filePath
@@ -17,7 +21,15 @@ function Bitmap(filePath) {
  */
 Bitmap.prototype.parse = function(buffer) {
   this.type = buffer.toString('utf-8', 0, 2);
-  //... and so on
+  console.log('type', this.type);
+  this.fileSize = buffer.readInt32LE(2); //read 32 bytes skipping the first two
+  console.log('file size', this.fileSize);
+  this.bytesPerPixel = buffer.readInt16LE(28);
+  console.log('bytes per pixel', this.bytesPerPixel);
+  this.height = buffer.readInt32LE(22);
+  console.log('height', this.height);
+  this.width = buffer.readInt32LE(18);
+  console.log('width', this.width);
 };
 
 /**
@@ -26,8 +38,10 @@ Bitmap.prototype.parse = function(buffer) {
  */
 Bitmap.prototype.transform = function(operation) {
   // This is really assumptive and unsafe
-  transforms[operation](this);
+  transforms[operation];
   this.newFile = this.file.replace(/\.bmp/, `.${operation}.bmp`);
+  console.log(operation);
+  console.log(process.argv);
 };
 
 /**
@@ -37,7 +51,7 @@ Bitmap.prototype.transform = function(operation) {
  * @param bmp
  */
 const transformGreyscale = (bmp) => {
-
+  Bitmap.transform('greyscale');
   console.log('Transforming bitmap into greyscale', bmp);
 
   //TODO: Figure out a way to validate that the bmp instance is actually valid before trying to transform it
@@ -51,7 +65,7 @@ const transformGreyscale = (bmp) => {
  * Each property represents a transformation that someone could enter on the command line and then a function that would be called on the bitmap to do this job
  */
 const transforms = {
-  greyscale: transformGreyscale
+  greyscale: transformGreyscale,
 };
 
 // ------------------ GET TO WORK ------------------- //
