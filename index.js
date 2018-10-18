@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 
-const buffer = fs.readFileSync(`${__dirname}/baldy.bmp`);
+const buffer = fs.readFileSync(`${__dirname}/assets/baldy.bmp`);
 
 console.log(buffer);
 
@@ -20,6 +20,7 @@ function Bitmap(filePath) {
  * @param buffer
  */
 Bitmap.prototype.parse = function(buffer) {
+  this.buffer = Buffer.from(buffer);
   this.type = buffer.toString('utf-8', 0, 2);
   console.log('type', this.type);
   this.fileSize = buffer.readInt32LE(2); //read 32 bytes skipping the first two
@@ -57,6 +58,27 @@ const transformGreyscale = (bmp) => {
   //TODO: Figure out a way to validate that the bmp instance is actually valid before trying to transform it
 
   //TODO: alter bmp to make the image greyscale ...
+  function toGrayscale(buffer) {
+    var canvas = document.createElement('canvas');
+    var ctx = canvas.getContext('2d');
+    var width = buffer.width;
+    var height = buffer.height;
+    canvas.width = width;
+    canvas.height = height;
+
+    ctx.drawImage(buffer, 0, 0);
+
+    var imagePixels = ctx.getImageData(0, 0, width, height);
+
+    for (var i = 0; i < imagePixels.height; i++) {
+      for (var j = 0; j < imagePixels.width; j++) {
+        var x = (i * 4) * imagePixels.width * j * 4;
+        var avg = (imagePixels.data[x] + imagePixels.data[x + 1] + imagePixels.data[x + 2]) / 3;
+        imagePixels.data[x];
+      }
+    }
+  }
+  return toGrayscale(buffer);
 
 };
 
