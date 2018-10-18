@@ -1,0 +1,29 @@
+{
+  "name": "lab-04",
+  "version": "1.0.0",
+  "description": "![CF](http://i.imgur.com/7v5ASc8.png) LAB: Buffers - Bitmap Transformer =======================================================================",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest --coverage --verbose",
+    "test-watch": "jest --coverage --verbose --watchAll",
+    "lint": "eslint **/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sgtbelly/lab-04.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sgtbelly/lab-04/issues"
+  },
+  "homepage": "https://github.com/sgtbelly/lab-04#readme",
+  "dependencies": {
+    "eslint": "^5.7.0",
+    "jest": "^23.6.0",
+    "lint": "^1.1.2",
+    "test": "^0.6.0"
+  }
+}

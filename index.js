@@ -2,6 +2,10 @@
 
 const fs = require('fs');
 
+const buffer = fs.readFileSync(`${__dirname}/assets/baldy.bmp`);
+
+console.log(buffer);
+
 /**
  * Bitmap -- receives a file name, used in the transformer to note the new buffer
  * @param filePath
@@ -16,8 +20,17 @@ function Bitmap(filePath) {
  * @param buffer
  */
 Bitmap.prototype.parse = function(buffer) {
+  this.buffer = Buffer.from(buffer);
   this.type = buffer.toString('utf-8', 0, 2);
-  //... and so on
+  console.log('type', this.type);
+  this.fileSize = buffer.readInt32LE(2); //read 32 bytes skipping the first two
+  console.log('file size', this.fileSize);
+  this.bytesPerPixel = buffer.readInt16LE(28);
+  console.log('bytes per pixel', this.bytesPerPixel);
+  this.height = buffer.readInt32LE(22);
+  console.log('height', this.height);
+  this.width = buffer.readInt32LE(18);
+  console.log('width', this.width);
 };
 
 /**
@@ -26,8 +39,10 @@ Bitmap.prototype.parse = function(buffer) {
  */
 Bitmap.prototype.transform = function(operation) {
   // This is really assumptive and unsafe
-  transforms[operation](this);
+  transforms[operation];
   this.newFile = this.file.replace(/\.bmp/, `.${operation}.bmp`);
+  console.log(operation);
+  console.log(process.argv);
 };
 
 /**
@@ -37,12 +52,33 @@ Bitmap.prototype.transform = function(operation) {
  * @param bmp
  */
 const transformGreyscale = (bmp) => {
-
+  Bitmap.transform('greyscale');
   console.log('Transforming bitmap into greyscale', bmp);
 
   //TODO: Figure out a way to validate that the bmp instance is actually valid before trying to transform it
 
   //TODO: alter bmp to make the image greyscale ...
+  function toGrayscale(buffer) {
+    var canvas = document.createElement('canvas');
+    var ctx = canvas.getContext('2d');
+    var width = buffer.width;
+    var height = buffer.height;
+    canvas.width = width;
+    canvas.height = height;
+
+    ctx.drawImage(buffer, 0, 0);
+
+    var imagePixels = ctx.getImageData(0, 0, width, height);
+
+    for (var i = 0; i < imagePixels.height; i++) {
+      for (var j = 0; j < imagePixels.width; j++) {
+        var x = (i * 4) * imagePixels.width * j * 4;
+        var avg = (imagePixels.data[x] + imagePixels.data[x + 1] + imagePixels.data[x + 2]) / 3;
+        imagePixels.data[x];
+      }
+    }
+  }
+  return toGrayscale(buffer);
 
 };
 
@@ -51,7 +87,7 @@ const transformGreyscale = (bmp) => {
  * Each property represents a transformation that someone could enter on the command line and then a function that would be called on the bitmap to do this job
  */
 const transforms = {
-  greyscale: transformGreyscale
+  greyscale: transformGreyscale,
 };
 
 // ------------------ GET TO WORK ------------------- //
